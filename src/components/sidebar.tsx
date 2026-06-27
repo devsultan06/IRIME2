@@ -94,9 +94,6 @@ export function Sidebar({ profile }: SidebarProps) {
             <h1 className="text-lg font-bold text-white tracking-tight">
               IRME
             </h1>
-            <p className="text-[0.65rem] text-zinc-500 uppercase tracking-widest font-semibold">
-              v2.0 Platform
-            </p>
           </div>
         </div>
       </div>

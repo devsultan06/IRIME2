@@ -29,6 +29,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Clickable Elements ────────────────────────────────────────────────────── */
+
+button,
+a,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+input[type="file"],
+label {
+  cursor: pointer;
+}
+
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {

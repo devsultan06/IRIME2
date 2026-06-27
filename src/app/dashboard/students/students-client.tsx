@@ -39,15 +39,19 @@ export function StudentsClient({ roster, submissionsMap }: StudentsClientProps) 
   const activeStudent = roster.find((s) => s.id === activeStudentId);
   const activeSubmissions = activeStudentId ? submissionsMap[activeStudentId] || [] : [];
 
-  // Flatten evaluations for SubmissionCard
-  const flatActiveSubmissions = activeSubmissions.map((s) => ({
-    ...s,
-    content_score: s.evaluations?.[0]?.content_score ?? null,
-    organization_score: s.evaluations?.[0]?.organization_score ?? null,
-    feedback: s.evaluations?.[0]?.feedback ?? null,
-    is_flagged: s.evaluations?.[0]?.is_flagged ?? null,
-    flag_reason: s.evaluations?.[0]?.flag_reason ?? null,
-  }));
+  // Flatten evaluations for SubmissionCard, supporting both array and object formats from PostgREST
+  const flatActiveSubmissions = activeSubmissions.map((s) => {
+    const ev = s.evaluations;
+    const evalData = Array.isArray(ev) ? ev[0] : ev;
+    return {
+      ...s,
+      content_score: evalData?.content_score ?? null,
+      organization_score: evalData?.organization_score ?? null,
+      feedback: evalData?.feedback ?? null,
+      is_flagged: evalData?.is_flagged ?? null,
+      flag_reason: evalData?.flag_reason ?? null,
+    };
+  });
 
   function handleSelect(id: string) {
     const params = new URLSearchParams(searchParams.toString());

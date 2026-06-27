@@ -46,15 +46,19 @@ export function StudentDashboard({
     (s) => s.status === "Flagged"
   ).length;
 
-  // Flatten evaluations into submissions for the SubmissionCard component
-  const flatSubmissions = submissions.map((s) => ({
-    ...s,
-    content_score: s.evaluations?.[0]?.content_score ?? null,
-    organization_score: s.evaluations?.[0]?.organization_score ?? null,
-    feedback: s.evaluations?.[0]?.feedback ?? null,
-    is_flagged: s.evaluations?.[0]?.is_flagged ?? null,
-    flag_reason: s.evaluations?.[0]?.flag_reason ?? null,
-  }));
+  // Helper to extract evaluation details safely supporting both array and object formats from PostgREST
+  const flatSubmissions = submissions.map((s) => {
+    const ev = s.evaluations;
+    const evalData = Array.isArray(ev) ? ev[0] : ev;
+    return {
+      ...s,
+      content_score: evalData?.content_score ?? null,
+      organization_score: evalData?.organization_score ?? null,
+      feedback: evalData?.feedback ?? null,
+      is_flagged: evalData?.is_flagged ?? null,
+      flag_reason: evalData?.flag_reason ?? null,
+    };
+  });
 
   return (
     <div className="space-y-6 animate-fade-in">
